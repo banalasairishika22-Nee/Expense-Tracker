@@ -150,13 +150,17 @@ DASHBOARD
 }
 
 
-/* Dashboard header */
+/* =========================
+DASHBOARD HEADER
+========================= */
 
 .dashboard-header {
     display: flex;
 
     justify-content: space-between;
     align-items: center;
+
+    gap: 20px;
 
     margin-bottom: 30px;
 }
@@ -172,7 +176,63 @@ DASHBOARD
 }
 
 
-/* Logout */
+/* =========================
+HEADER BUTTONS
+========================= */
+
+.header-buttons {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================
+PDF BUTTON
+========================= */
+
+#downloadPdfBtn {
+    border: none;
+
+    padding: 11px 18px;
+
+    border-radius: 9px;
+
+    background: #16a34a;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+#downloadPdfBtn:hover {
+    background: #15803d;
+
+    transform: translateY(-1px);
+}
+
+#downloadPdfBtn:disabled {
+    background: #94a3b8;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================
+LOGOUT
+========================= */
 
 #logoutBtn {
     border: none;
@@ -182,16 +242,22 @@ DASHBOARD
     border-radius: 9px;
 
     background: #ef4444;
+
     color: white;
 
     font-size: 14px;
+
     font-weight: 600;
 
     cursor: pointer;
+
+    transition: 0.2s;
 }
 
 #logoutBtn:hover {
     background: #dc2626;
+
+    transform: translateY(-1px);
 }
 
 
@@ -298,7 +364,9 @@ EXPENSE FORM
 }
 
 
-/* Form */
+/* =========================
+FORM
+========================= */
 
 #expenseForm {
     display: grid;
@@ -340,7 +408,9 @@ EXPENSE FORM
 }
 
 
-/* Add Expense button */
+/* =========================
+ADD EXPENSE BUTTON
+========================= */
 
 #expenseForm button {
     grid-column: 1 / -1;
@@ -360,14 +430,20 @@ EXPENSE FORM
     font-weight: 600;
 
     cursor: pointer;
+
+    transition: 0.2s;
 }
 
 #expenseForm button:hover {
     background: #4338ca;
+
+    transform: translateY(-1px);
 }
 
 
-/* Message */
+/* =========================
+MESSAGE
+========================= */
 
 #expenseMessage {
     margin-top: 15px;
@@ -506,6 +582,8 @@ td button {
     background: #4f46e5;
 
     color: white;
+
+    transition: 0.2s;
 }
 
 td button:hover {
@@ -554,10 +632,12 @@ MOBILE RESPONSIVE
     }
 
 
+    /* Header */
+
     .dashboard-header {
         flex-direction: column;
 
-        align-items: flex-start;
+        align-items: stretch;
 
         gap: 15px;
     }
@@ -566,10 +646,30 @@ MOBILE RESPONSIVE
         font-size: 25px;
     }
 
-    #logoutBtn {
+
+    /* Header buttons */
+
+    .header-buttons {
         width: 100%;
+
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 8px;
     }
 
+    #downloadPdfBtn,
+    #logoutBtn {
+        width: 100%;
+
+        padding: 11px 8px;
+
+        font-size: 13px;
+    }
+
+
+    /* Summary */
 
     .summary-cards {
         grid-template-columns: 1fr;
@@ -582,20 +682,22 @@ MOBILE RESPONSIVE
     }
 
 
+    /* Form */
+
     #expenseForm {
         grid-template-columns: 1fr;
     }
-
 
     #expenseForm button {
         grid-column: auto;
     }
 
-
     .expense-form-container {
         padding: 18px;
     }
 
+
+    /* Table */
 
     .table-container {
         overflow-x: auto;
@@ -613,4 +715,55 @@ MOBILE RESPONSIVE
     .daily-expense-date strong {
         font-size: 17px;
     }
+
+
+    /* Action buttons */
+
+    td button {
+        padding: 7px 10px;
+
+        margin-bottom: 4px;
+    }
+
+}
+
+
+/* =========================
+SMALL MOBILE
+========================= */
+
+@media (max-width: 420px) {
+
+    .dashboard-container {
+        width: 96%;
+
+        padding: 16px 10px;
+    }
+
+
+    .dashboard-header h1 {
+        font-size: 22px;
+    }
+
+
+    .header-buttons {
+        grid-template-columns: 1fr;
+    }
+
+
+    #downloadPdfBtn,
+    #logoutBtn {
+        width: 100%;
+    }
+
+
+    .summary-card h2 {
+        font-size: 20px;
+    }
+
+
+    .expense-form-container {
+        padding: 15px;
+    }
+
 }

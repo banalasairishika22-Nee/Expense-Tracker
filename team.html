@@ -1,47 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Team Expenses - Expense Tracker</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
     <div class="dashboard-container">
 
-        <h1>Daily Expenses</h1>
+        <!-- Header -->
 
-        <p>View-only access</p>
+        <div class="dashboard-header">
 
-        <div class="table-container">
+            <div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Purpose</th>
-                        <th>Amount</th>
-                        <th>Paid By</th>
-                        <th>Balance Amount</th>
-                    </tr>
-                </thead>
+                <h1>
+                    Daily Expenses
+                </h1>
 
-                <tbody id="expenseTableBody">
-                    <!-- Expenses will appear here -->
-                </tbody>
+                <p>
+                    View-only access
+                </p>
 
-            </table>
+            </div>
+
+
+            <button
+                id="downloadPdfBtn"
+            >
+                📄 Download PDF
+            </button>
+
+        </div>
+
+
+        <!-- Expenses -->
+
+        <div class="expenses-section">
+
+            <h2>
+                Daily Expenses
+            </h2>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Purpose
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+
+                            <th>
+                                Paid By
+                            </th>
+
+                            <th>
+                                Balance Amount
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="expenseTableBody"
+                    >
+
+                        <!-- Expenses will appear here -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
 
         </div>
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Supabase -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <!-- Main JavaScript -->
+
     <script src="script.js"></script>
 
+
 </body>
+
 </html>

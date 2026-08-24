@@ -2,74 +2,163 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Admin Dashboard - Expense Tracker</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
 </head>
+
 
 <body>
 
     <div class="dashboard-container">
 
-        <!-- Dashboard Header -->
+
+        <!-- ============================= -->
+        <!-- DASHBOARD HEADER -->
+        <!-- ============================= -->
+
         <div class="dashboard-header">
 
             <div>
-                <h1>Admin Dashboard</h1>
-                <p>Manage Daily Expenses</p>
+
+                <h1>
+                    Admin Dashboard
+                </h1>
+
+                <p>
+                    Manage Daily Expenses
+                </p>
+
             </div>
 
-            <button id="logoutBtn">Logout</button>
+
+            <div class="header-buttons">
+
+                <button
+                    id="downloadPdfBtn"
+                    type="button"
+                >
+                    📄 Download PDF
+                </button>
+
+
+                <button
+                    id="logoutBtn"
+                    type="button"
+                >
+                    Logout
+                </button>
+
+            </div>
 
         </div>
 
 
-        <!-- Summary Cards -->
+        <!-- ============================= -->
+        <!-- SUMMARY CARDS -->
+        <!-- ============================= -->
+
         <div class="summary-cards">
 
+
             <div class="summary-card">
-                <div class="card-icon">💰</div>
+
+                <div class="card-icon">
+                    💰
+                </div>
 
                 <div>
-                    <p>Total Expenses</p>
-                    <h2 id="totalExpense">₹0.00</h2>
+
+                    <p>
+                        Total Expenses
+                    </p>
+
+                    <h2 id="totalExpense">
+                        ₹0.00
+                    </h2>
+
                 </div>
+
             </div>
 
 
+
             <div class="summary-card">
-                <div class="card-icon">💵</div>
+
+                <div class="card-icon">
+                    💵
+                </div>
 
                 <div>
-                    <p>Total Balance</p>
-                    <h2 id="totalBalance">₹0.00</h2>
+
+                    <p>
+                        Total Balance
+                    </p>
+
+                    <h2 id="totalBalance">
+                        ₹0.00
+                    </h2>
+
                 </div>
+
             </div>
 
 
+
             <div class="summary-card">
-                <div class="card-icon">🧾</div>
+
+                <div class="card-icon">
+                    🧾
+                </div>
 
                 <div>
-                    <p>Total Entries</p>
-                    <h2 id="totalEntries">0</h2>
+
+                    <p>
+                        Total Entries
+                    </p>
+
+                    <h2 id="totalEntries">
+                        0
+                    </h2>
+
                 </div>
+
             </div>
+
 
         </div>
 
 
-        <!-- Add Expense -->
+
+        <!-- ============================= -->
+        <!-- ADD EXPENSE -->
+        <!-- ============================= -->
+
         <div class="expense-form-container">
 
-            <h2>Add Expense</h2>
+            <h2>
+                Add Expense
+            </h2>
+
 
             <form id="expenseForm">
 
-                <label>Date</label>
+
+                <label>
+                    Date
+                </label>
 
                 <input
                     type="date"
@@ -78,7 +167,10 @@
                 >
 
 
-                <label>Purpose</label>
+
+                <label>
+                    Purpose
+                </label>
 
                 <input
                     type="text"
@@ -88,7 +180,10 @@
                 >
 
 
-                <label>Amount</label>
+
+                <label>
+                    Amount
+                </label>
 
                 <input
                     type="number"
@@ -100,7 +195,10 @@
                 >
 
 
-                <label>Paid By</label>
+
+                <label>
+                    Paid By
+                </label>
 
                 <input
                     type="text"
@@ -110,7 +208,10 @@
                 >
 
 
-                <label>Balance Amount</label>
+
+                <label>
+                    Balance Amount
+                </label>
 
                 <input
                     type="number"
@@ -122,59 +223,118 @@
                 >
 
 
-                <button type="submit">
+
+                <button
+                    type="submit"
+                >
                     Add Expense
                 </button>
 
+
             </form>
 
-            <p id="expenseMessage"></p>
+
+            <p
+                id="expenseMessage"
+            ></p>
+
 
         </div>
 
 
-        <!-- Daily Expenses -->
+
+        <!-- ============================= -->
+        <!-- DAILY EXPENSES -->
+        <!-- ============================= -->
+
         <div class="expenses-section">
 
-            <h2>Daily Expenses</h2>
+
+            <h2>
+                Daily Expenses
+            </h2>
+
 
             <div class="table-container">
 
+
                 <table>
+
 
                     <thead>
 
                         <tr>
-                            <th>Date</th>
-                            <th>Purpose</th>
-                            <th>Amount</th>
-                            <th>Paid By</th>
-                            <th>Balance Amount</th>
-                            <th>Daily Total</th>
-                            <th>Action</th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Purpose
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+
+                            <th>
+                                Paid By
+                            </th>
+
+                            <th>
+                                Balance Amount
+                            </th>
+
+                            <th>
+                                Daily Total
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
                         </tr>
 
                     </thead>
 
 
-                    <tbody id="adminExpenseTableBody">
+
+                    <tbody
+                        id="adminExpenseTableBody"
+                    >
 
                     </tbody>
 
+
                 </table>
+
 
             </div>
 
+
         </div>
+
 
     </div>
 
 
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- JavaScript -->
+    <!-- ============================= -->
+    <!-- SUPABASE -->
+    <!-- ============================= -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+
+    <!-- ============================= -->
+    <!-- MAIN JAVASCRIPT -->
+    <!-- ============================= -->
+
     <script src="script.js"></script>
+
 
 </body>
 

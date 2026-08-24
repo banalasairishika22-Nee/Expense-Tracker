@@ -730,7 +730,9 @@ async function deleteExpense(id) {
     }
 
 
-    alert("Expense deleted successfully!");
+    alert(
+        "Expense deleted successfully!"
+    );
 
     await loadExpenses();
 
@@ -738,19 +740,25 @@ async function deleteExpense(id) {
 
 
 // =====================================
-// EDIT EXPENSE - ALL FIELDS
+// EDIT EXPENSE
 // =====================================
 
 async function editExpense(id) {
 
-    console.log("Editing expense ID:", id);
+    console.log(
+        "Editing expense ID:",
+        id
+    );
 
 
     // =================================
     // GET CURRENT EXPENSE
     // =================================
 
-    const { data, error: fetchError } =
+    const {
+        data,
+        error: fetchError
+    } =
         await db
             .from("expenses")
             .select("*")
@@ -777,7 +785,9 @@ async function editExpense(id) {
 
     if (!data) {
 
-        alert("Expense not found.");
+        alert(
+            "Expense not found."
+        );
 
         return;
 
@@ -919,17 +929,16 @@ async function editExpense(id) {
     );
 
 
-    const { data: updatedData, error: updateError } =
+    const {
+        data: updatedData,
+        error: updateError
+    } =
         await db
             .from("expenses")
             .update(updatedExpense)
             .eq("id", id)
             .select();
 
-
-    // =================================
-    // UPDATE ERROR
-    // =================================
 
     if (updateError) {
 
@@ -948,10 +957,6 @@ async function editExpense(id) {
     }
 
 
-    // =================================
-    // SUCCESS
-    // =================================
-
     console.log(
         "Expense updated successfully:",
         updatedData
@@ -963,7 +968,6 @@ async function editExpense(id) {
     );
 
 
-    // Reload table
     await loadExpenses();
 
 }
@@ -1012,6 +1016,10 @@ const teamExpenseTableBody =
         "expenseTableBody"
     );
 
+
+// =====================================
+// LOAD TEAM EXPENSES
+// =====================================
 
 async function loadTeamExpenses() {
 
@@ -1223,3 +1231,539 @@ if (teamExpenseTableBody) {
     loadTeamExpenses();
 
 }
+
+
+// =====================================
+// PDF LIBRARY
+// =====================================
+
+function loadPDFLibraries() {
+
+    return new Promise(
+        function (resolve, reject) {
+
+            // jsPDF already loaded
+            if (
+                window.jspdf &&
+                window.jspdf.jsPDF
+            ) {
+
+                loadAutoTable();
+
+                return;
+
+            }
+
+
+            const jsPDFScript =
+                document.createElement(
+                    "script"
+                );
+
+            jsPDFScript.src =
+                "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
+
+            jsPDFScript.onload =
+                function () {
+
+                    loadAutoTable();
+
+                };
+
+            jsPDFScript.onerror =
+                function () {
+
+                    reject(
+                        new Error(
+                            "Unable to load PDF library."
+                        )
+                    );
+
+                };
+
+            document.head.appendChild(
+                jsPDFScript
+            );
+
+
+            function loadAutoTable() {
+
+                if (
+                    window.jspdfAutoTableLoaded
+                ) {
+
+                    resolve();
+
+                    return;
+
+                }
+
+
+                const autoTableScript =
+                    document.createElement(
+                        "script"
+                    );
+
+                autoTableScript.src =
+                    "https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js";
+
+                autoTableScript.onload =
+                    function () {
+
+                        window.jspdfAutoTableLoaded =
+                            true;
+
+                        resolve();
+
+                    };
+
+                autoTableScript.onerror =
+                    function () {
+
+                        reject(
+                            new Error(
+                                "Unable to load PDF table library."
+                            )
+                        );
+
+                    };
+
+                document.head.appendChild(
+                    autoTableScript
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+// =====================================
+// DOWNLOAD EXPENSE PDF
+// =====================================
+
+async function downloadExpensesPDF() {
+
+    try {
+
+        const button =
+            document.getElementById(
+                "downloadPdfBtn"
+            );
+
+
+        if (button) {
+
+            button.disabled = true;
+
+            button.textContent =
+                "Creating PDF...";
+
+        }
+
+
+        // Load PDF libraries
+
+        await loadPDFLibraries();
+
+
+        // Get latest data from Supabase
+
+        const {
+            data,
+            error
+        } =
+            await db
+                .from("expenses")
+                .select("*")
+                .order("date", {
+                    ascending: true
+                });
+
+
+        if (error) {
+
+            console.error(
+                "PDF data error:",
+                error
+            );
+
+            alert(
+                "Unable to create PDF:\n\n" +
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+
+            alert(
+                "There are no expenses to download."
+            );
+
+            return;
+
+        }
+
+
+        // =================================
+        // TOTALS
+        // =================================
+
+        let totalExpense = 0;
+
+        let totalBalance = 0;
+
+
+        data.forEach(
+            function (expense) {
+
+                totalExpense +=
+                    Number(
+                        expense.amount
+                    ) || 0;
+
+                totalBalance +=
+                    Number(
+                        expense.balance_amount
+                    ) || 0;
+
+            }
+        );
+
+
+        // =================================
+        // CREATE PDF
+        // =================================
+
+        const {
+            jsPDF
+        } = window.jspdf;
+
+
+        const doc =
+            new jsPDF();
+
+
+        // =================================
+        // TITLE
+        // =================================
+
+        doc.setFontSize(
+            20
+        );
+
+        doc.text(
+            "Expense Tracker",
+            14,
+            18
+        );
+
+
+        doc.setFontSize(
+            11
+        );
+
+        doc.text(
+            "Expense Report",
+            14,
+            26
+        );
+
+
+        doc.text(
+            "Generated: " +
+            new Date().toLocaleDateString(
+                "en-IN"
+            ),
+            14,
+            33
+        );
+
+
+        // =================================
+        // SUMMARY
+        // =================================
+
+        doc.setFontSize(
+            12
+        );
+
+        doc.text(
+            "Total Expenses: Rs. " +
+            totalExpense.toFixed(2),
+            14,
+            44
+        );
+
+        doc.text(
+            "Total Balance: Rs. " +
+            totalBalance.toFixed(2),
+            14,
+            51
+        );
+
+        doc.text(
+            "Total Entries: " +
+            data.length,
+            14,
+            58
+        );
+
+
+        // =================================
+        // TABLE DATA
+        // =================================
+
+        const tableData =
+            data.map(
+                function (expense) {
+
+                    const formattedDate =
+                        new Date(
+                            expense.date +
+                            "T00:00:00"
+                        ).toLocaleDateString(
+                            "en-IN",
+                            {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric"
+                            }
+                        );
+
+
+                    return [
+
+                        formattedDate,
+
+                        expense.purpose ||
+                            "",
+
+                        "Rs. " +
+                        Number(
+                            expense.amount
+                        ).toFixed(2),
+
+                        expense.paid_by ||
+                            "",
+
+                        "Rs. " +
+                        Number(
+                            expense.balance_amount
+                        ).toFixed(2)
+
+                    ];
+
+                }
+            );
+
+
+        // =================================
+        // PDF TABLE
+        // =================================
+
+        doc.autoTable({
+
+            startY: 66,
+
+            head: [
+
+                [
+                    "Date",
+                    "Purpose",
+                    "Amount",
+                    "Paid By",
+                    "Balance"
+                ]
+
+            ],
+
+            body:
+                tableData,
+
+            theme:
+                "grid",
+
+            styles: {
+
+                fontSize:
+                    9,
+
+                cellPadding:
+                    3
+
+            },
+
+            headStyles: {
+
+                fontSize:
+                    9
+
+            }
+
+        });
+
+
+        // =================================
+        // FOOTER TOTALS
+        // =================================
+
+        const finalY =
+            doc.lastAutoTable.finalY +
+            12;
+
+
+        doc.setFontSize(
+            12
+        );
+
+
+        doc.text(
+            "Total Expenses: Rs. " +
+            totalExpense.toFixed(2),
+            14,
+            finalY
+        );
+
+
+        doc.text(
+            "Total Balance: Rs. " +
+            totalBalance.toFixed(2),
+            14,
+            finalY + 8
+        );
+
+
+        // =================================
+        // SAVE PDF
+        // =================================
+
+        const today =
+            new Date()
+                .toISOString()
+                .split("T")[0];
+
+
+        doc.save(
+            "Expense-Report-" +
+            today +
+            ".pdf"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "PDF generation error:",
+            error
+        );
+
+        alert(
+            "Unable to create PDF:\n\n" +
+            error.message
+        );
+
+    } finally {
+
+        const button =
+            document.getElementById(
+                "downloadPdfBtn"
+            );
+
+
+        if (button) {
+
+            button.disabled = false;
+
+            button.textContent =
+                "📄 Download PDF";
+
+        }
+
+    }
+
+}
+
+
+// =====================================
+// SETUP PDF BUTTON
+// =====================================
+
+function setupPDFButton() {
+
+    let button =
+        document.getElementById(
+            "downloadPdfBtn"
+        );
+
+
+    // =================================
+    // ADMIN BUTTON
+    // =================================
+
+    if (button) {
+
+        button.addEventListener(
+            "click",
+            downloadExpensesPDF
+        );
+
+        return;
+
+    }
+
+
+    // =================================
+    // TEAM BUTTON
+    // =================================
+
+    const dashboardHeader =
+        document.querySelector(
+            ".dashboard-header"
+        );
+
+
+    if (!dashboardHeader) return;
+
+
+    button =
+        document.createElement(
+            "button"
+        );
+
+
+    button.id =
+        "downloadPdfBtn";
+
+
+    button.textContent =
+        "📄 Download PDF";
+
+
+    button.addEventListener(
+        "click",
+        downloadExpensesPDF
+    );
+
+
+    dashboardHeader.appendChild(
+        button
+    );
+
+}
+
+
+// =====================================
+// START PDF BUTTON
+// =====================================
+
+setupPDFButton();
