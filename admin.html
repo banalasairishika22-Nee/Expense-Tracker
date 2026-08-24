@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - Expense Tracker</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+
+            <div>
+                <h1>Admin Dashboard</h1>
+                <p>Manage Daily Expenses</p>
+            </div>
+
+            <button id="logoutBtn">Logout</button>
+
+        </div>
+
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+
+            <div class="summary-card">
+                <div class="card-icon">💰</div>
+
+                <div>
+                    <p>Total Expenses</p>
+                    <h2 id="totalExpense">₹0.00</h2>
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="card-icon">💵</div>
+
+                <div>
+                    <p>Total Balance</p>
+                    <h2 id="totalBalance">₹0.00</h2>
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="card-icon">🧾</div>
+
+                <div>
+                    <p>Total Entries</p>
+                    <h2 id="totalEntries">0</h2>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Add Expense -->
+        <div class="expense-form-container">
+
+            <h2>Add Expense</h2>
+
+            <form id="expenseForm">
+
+                <label>Date</label>
+
+                <input
+                    type="date"
+                    id="expenseDate"
+                    required
+                >
+
+
+                <label>Purpose</label>
+
+                <input
+                    type="text"
+                    id="purpose"
+                    placeholder="Enter purpose"
+                    required
+                >
+
+
+                <label>Amount</label>
+
+                <input
+                    type="number"
+                    id="amount"
+                    placeholder="Enter amount"
+                    min="0"
+                    step="0.01"
+                    required
+                >
+
+
+                <label>Paid By</label>
+
+                <input
+                    type="text"
+                    id="paidBy"
+                    placeholder="Enter paid by"
+                    required
+                >
+
+
+                <label>Balance Amount</label>
+
+                <input
+                    type="number"
+                    id="balanceAmount"
+                    placeholder="Enter balance amount"
+                    min="0"
+                    step="0.01"
+                    required
+                >
+
+
+                <button type="submit">
+                    Add Expense
+                </button>
+
+            </form>
+
+            <p id="expenseMessage"></p>
+
+        </div>
+
+
+        <!-- Daily Expenses -->
+        <div class="expenses-section">
+
+            <h2>Daily Expenses</h2>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Date</th>
+                            <th>Purpose</th>
+                            <th>Amount</th>
+                            <th>Paid By</th>
+                            <th>Balance Amount</th>
+                            <th>Daily Total</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="adminExpenseTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>

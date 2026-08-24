@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Login - Expense Tracker</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <h1>Admin Login</h1>
+
+        <p>Enter admin password to continue</p>
+
+
+        <!-- =========================
+             ADMIN LOGIN
+        ========================== -->
+
+        <form id="adminLoginForm">
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                id="adminPassword"
+                placeholder="Enter admin password"
+                required
+            >
+
+            <button type="submit">
+                Login
+            </button>
+
+            <p id="loginMessage"></p>
+
+        </form>
+
+
+        <!-- =========================
+             CHANGE PASSWORD BUTTON
+        ========================== -->
+
+        <button
+            type="button"
+            id="forgotPasswordBtn"
+            style="
+                margin-top: 15px;
+                background: none;
+                border: none;
+                color: #4f46e5;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: 600;
+            "
+        >
+            Change Password
+        </button>
+
+
+        <!-- =========================
+             CHANGE PASSWORD BOX
+        ========================== -->
+
+        <div
+            id="changePasswordBox"
+            style="
+                display: none;
+                margin-top: 25px;
+            "
+        >
+
+            <h3 style="margin-bottom: 18px;">
+                Change Password
+            </h3>
+
+
+            <label>Old Password</label>
+
+            <input
+                type="password"
+                id="oldPassword"
+                placeholder="Enter old password"
+            >
+
+
+            <label>New Password</label>
+
+            <input
+                type="password"
+                id="newPassword"
+                placeholder="Enter new password"
+            >
+
+
+            <label>Confirm New Password</label>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm new password"
+            >
+
+
+            <button
+                type="button"
+                id="changePasswordBtn"
+            >
+                Change Password
+            </button>
+
+
+            <p id="changePasswordMessage"></p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         SUPABASE
+    ========================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- =========================
+         MAIN JAVASCRIPT
+    ========================== -->
+
+    <script src="script.js"></script>
+
+
+    <!-- =========================
+         OPEN CHANGE PASSWORD
+    ========================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const forgotButton =
+                    document.getElementById(
+                        "forgotPasswordBtn"
+                    );
+
+                const passwordBox =
+                    document.getElementById(
+                        "changePasswordBox"
+                    );
+
+
+                forgotButton.addEventListener(
+                    "click",
+                    function () {
+
+                        if (
+                            passwordBox.style.display ===
+                            "none"
+                        ) {
+
+                            passwordBox.style.display =
+                                "block";
+
+                        } else {
+
+                            passwordBox.style.display =
+                                "none";
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
