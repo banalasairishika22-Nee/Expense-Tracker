@@ -28,50 +28,28 @@ let ADMIN_PASSWORD =
 // HOME PAGE
 // =====================================
 
-const adminBtn =
-    document.getElementById("adminBtn");
-
-const teamBtn =
-    document.getElementById("teamBtn");
-
+const adminBtn = document.getElementById("adminBtn");
+const teamBtn = document.getElementById("teamBtn");
 
 if (adminBtn) {
-
-    adminBtn.addEventListener(
-        "click",
-        function () {
-
-            window.location.href =
-                "admin-login.html";
-
-        }
-    );
-
+    adminBtn.addEventListener("click", function () {
+        window.location.href = "admin-login.html";
+    });
 }
 
-
 if (teamBtn) {
-
-    teamBtn.addEventListener(
-        "click",
-        function () {
-
-            window.location.href =
-                "team.html";
-
-        }
-    );
-
+    teamBtn.addEventListener("click", function () {
+        window.location.href = "team.html";
+    });
 }
 
 
 // =====================================
-// ADMIN PASSWORD LOGIN
+// ADMIN LOGIN
 // =====================================
 
 const adminLoginForm =
     document.getElementById("adminLoginForm");
-
 
 if (adminLoginForm) {
 
@@ -82,18 +60,12 @@ if (adminLoginForm) {
             event.preventDefault();
 
             const password =
-                document.getElementById(
-                    "adminPassword"
-                ).value;
+                document.getElementById("adminPassword").value;
 
             const message =
-                document.getElementById(
-                    "loginMessage"
-                );
+                document.getElementById("loginMessage");
 
-            message.textContent =
-                "Checking password...";
-
+            message.textContent = "Checking password...";
 
             if (password === ADMIN_PASSWORD) {
 
@@ -105,15 +77,12 @@ if (adminLoginForm) {
                     "true"
                 );
 
-                setTimeout(
-                    function () {
+                setTimeout(function () {
 
-                        window.location.href =
-                            "admin.html";
+                    window.location.href =
+                        "admin.html";
 
-                    },
-                    500
-                );
+                }, 500);
 
             } else {
 
@@ -121,10 +90,8 @@ if (adminLoginForm) {
                     "Invalid password.";
 
             }
-
         }
     );
-
 }
 
 
@@ -133,10 +100,7 @@ if (adminLoginForm) {
 // =====================================
 
 const changePasswordBtn =
-    document.getElementById(
-        "changePasswordBtn"
-    );
-
+    document.getElementById("changePasswordBtn");
 
 if (changePasswordBtn) {
 
@@ -145,25 +109,18 @@ if (changePasswordBtn) {
         function () {
 
             const oldPassword =
-                document.getElementById(
-                    "oldPassword"
-                ).value;
+                document.getElementById("oldPassword").value;
 
             const newPassword =
-                document.getElementById(
-                    "newPassword"
-                ).value;
+                document.getElementById("newPassword").value;
 
             const confirmPassword =
-                document.getElementById(
-                    "confirmPassword"
-                ).value;
+                document.getElementById("confirmPassword").value;
 
             const message =
                 document.getElementById(
                     "changePasswordMessage"
                 );
-
 
             if (
                 !oldPassword ||
@@ -175,22 +132,15 @@ if (changePasswordBtn) {
                     "Please fill all fields.";
 
                 return;
-
             }
 
-
-            if (
-                oldPassword !==
-                ADMIN_PASSWORD
-            ) {
+            if (oldPassword !== ADMIN_PASSWORD) {
 
                 message.textContent =
                     "Old password is incorrect.";
 
                 return;
-
             }
-
 
             if (newPassword.length < 6) {
 
@@ -198,64 +148,39 @@ if (changePasswordBtn) {
                     "New password must be at least 6 characters.";
 
                 return;
-
             }
 
-
-            if (
-                newPassword !==
-                confirmPassword
-            ) {
+            if (newPassword !== confirmPassword) {
 
                 message.textContent =
                     "New passwords do not match.";
 
                 return;
-
             }
 
-
-            if (
-                newPassword ===
-                oldPassword
-            ) {
+            if (newPassword === oldPassword) {
 
                 message.textContent =
                     "New password must be different from old password.";
 
                 return;
-
             }
 
-
-            ADMIN_PASSWORD =
-                newPassword;
+            ADMIN_PASSWORD = newPassword;
 
             localStorage.setItem(
                 "adminPassword",
                 newPassword
             );
 
-
             message.textContent =
                 "Password changed successfully!";
 
-
-            document.getElementById(
-                "oldPassword"
-            ).value = "";
-
-            document.getElementById(
-                "newPassword"
-            ).value = "";
-
-            document.getElementById(
-                "confirmPassword"
-            ).value = "";
-
+            document.getElementById("oldPassword").value = "";
+            document.getElementById("newPassword").value = "";
+            document.getElementById("confirmPassword").value = "";
         }
     );
-
 }
 
 
@@ -264,9 +189,7 @@ if (changePasswordBtn) {
 // =====================================
 
 const expenseForm =
-    document.getElementById(
-        "expenseForm"
-    );
+    document.getElementById("expenseForm");
 
 const adminExpenseTableBody =
     document.getElementById(
@@ -274,9 +197,7 @@ const adminExpenseTableBody =
     );
 
 const logoutBtn =
-    document.getElementById(
-        "logoutBtn"
-    );
+    document.getElementById("logoutBtn");
 
 
 // =====================================
@@ -287,7 +208,6 @@ async function loadExpenses() {
 
     if (!adminExpenseTableBody) return;
 
-
     const { data, error } =
         await db
             .from("expenses")
@@ -295,7 +215,6 @@ async function loadExpenses() {
             .order("date", {
                 ascending: true
             });
-
 
     if (error) {
 
@@ -305,96 +224,63 @@ async function loadExpenses() {
         );
 
         return;
-
     }
-
 
     adminExpenseTableBody.innerHTML = "";
 
     let totalExpense = 0;
     let totalBalance = 0;
 
+    data.forEach(function (expense) {
 
-    // =================================
-    // TOTALS
-    // =================================
+        totalExpense +=
+            Number(expense.amount) || 0;
 
-    data.forEach(
-        function (expense) {
+        totalBalance +=
+            Number(expense.balance_amount) || 0;
 
-            totalExpense +=
-                Number(expense.amount) || 0;
-
-            totalBalance +=
-                Number(
-                    expense.balance_amount
-                ) || 0;
-
-        }
-    );
+    });
 
 
-    // =================================
+    // =====================================
     // GROUP BY DATE
-    // =================================
+    // =====================================
 
     const groupedExpenses = {};
 
+    data.forEach(function (expense) {
 
-    data.forEach(
-        function (expense) {
+        if (!groupedExpenses[expense.date]) {
 
-            if (
-                !groupedExpenses[
-                    expense.date
-                ]
-            ) {
-
-                groupedExpenses[
-                    expense.date
-                ] = [];
-
-            }
-
-            groupedExpenses[
-                expense.date
-            ].push(expense);
+            groupedExpenses[expense.date] = [];
 
         }
-    );
+
+        groupedExpenses[expense.date].push(expense);
+
+    });
 
 
-    // =================================
-    // DISPLAY EXPENSES
-    // =================================
+    // =====================================
+    // DISPLAY ADMIN EXPENSES
+    // =====================================
 
-    Object.keys(
-        groupedExpenses
-    ).forEach(
+    Object.keys(groupedExpenses).forEach(
         function (date) {
 
             const expensesForDay =
                 groupedExpenses[date];
 
-
             const dailyTotal =
                 expensesForDay.reduce(
-                    function (
-                        sum,
-                        expense
-                    ) {
+                    function (sum, expense) {
 
                         return sum +
-                            (
-                                Number(
-                                    expense.amount
-                                ) || 0
-                            );
+                            (Number(expense.amount) || 0);
 
                     },
                     0
                 );
-
 
             const formattedDate =
                 new Date(
@@ -409,21 +295,19 @@ async function loadExpenses() {
                 );
 
 
-            const dateRow =
-                document.createElement(
-                    "tr"
-                );
+            // DAILY HEADER
 
+            const dateRow =
+                document.createElement("tr");
 
             dateRow.innerHTML = `
                 <td
-                    colspan="6"
+                    colspan="7"
                     class="daily-expense-date"
                 >
 
                     <div>
-                        Daily Expenses -
-                        ${formattedDate}
+                        Daily Expenses - ${formattedDate}
                     </div>
 
                     <strong>
@@ -434,24 +318,16 @@ async function loadExpenses() {
                 </td>
             `;
 
-
-            adminExpenseTableBody.appendChild(
-                dateRow
-            );
+            adminExpenseTableBody.appendChild(dateRow);
 
 
-            // =================================
             // EXPENSE ROWS
-            // =================================
 
             expensesForDay.forEach(
                 function (expense) {
 
                     const row =
-                        document.createElement(
-                            "tr"
-                        );
-
+                        document.createElement("tr");
 
                     const tableDate =
                         new Date(
@@ -466,7 +342,6 @@ async function loadExpenses() {
                             }
                         );
 
-
                     row.innerHTML = `
 
                         <td>
@@ -474,7 +349,7 @@ async function loadExpenses() {
                         </td>
 
                         <td>
-                            ${expense.purpose}
+                            ${escapeHTML(expense.purpose)}
                         </td>
 
                         <td>
@@ -484,13 +359,17 @@ async function loadExpenses() {
                         </td>
 
                         <td>
-                            ${expense.paid_by}
+                            ${escapeHTML(expense.paid_by)}
                         </td>
 
                         <td>
                             ₹${Number(
                                 expense.balance_amount
                             ).toFixed(2)}
+                        </td>
+
+                        <td>
+                            ₹${dailyTotal.toFixed(2)}
                         </td>
 
                         <td>
@@ -511,10 +390,7 @@ async function loadExpenses() {
 
                     `;
 
-
-                    adminExpenseTableBody.appendChild(
-                        row
-                    );
+                    adminExpenseTableBody.appendChild(row);
 
                 }
             );
@@ -523,43 +399,32 @@ async function loadExpenses() {
     );
 
 
-    // =================================
-    // SUMMARY CARDS
-    // =================================
+    // =====================================
+    // SUMMARY
+    // =====================================
 
     const totalExpenseElement =
-        document.getElementById(
-            "totalExpense"
-        );
+        document.getElementById("totalExpense");
 
     const totalBalanceElement =
-        document.getElementById(
-            "totalBalance"
-        );
+        document.getElementById("totalBalance");
 
     const totalEntriesElement =
-        document.getElementById(
-            "totalEntries"
-        );
-
+        document.getElementById("totalEntries");
 
     if (totalExpenseElement) {
 
         totalExpenseElement.textContent =
-            "₹" +
-            totalExpense.toFixed(2);
+            "₹" + totalExpense.toFixed(2);
 
     }
-
 
     if (totalBalanceElement) {
 
         totalBalanceElement.textContent =
-            "₹" +
-            totalBalance.toFixed(2);
+            "₹" + totalBalance.toFixed(2);
 
     }
-
 
     if (totalEntriesElement) {
 
@@ -567,7 +432,25 @@ async function loadExpenses() {
             data.length;
 
     }
+}
 
+
+// =====================================
+// SAFE HTML
+// =====================================
+
+function escapeHTML(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
@@ -583,26 +466,19 @@ if (expenseForm) {
 
             event.preventDefault();
 
-
             const date =
-                document.getElementById(
-                    "expenseDate"
-                ).value;
+                document.getElementById("expenseDate").value;
 
             const purpose =
-                document.getElementById(
-                    "purpose"
-                ).value.trim();
+                document.getElementById("purpose")
+                    .value.trim();
 
             const amount =
-                document.getElementById(
-                    "amount"
-                ).value;
+                document.getElementById("amount").value;
 
             const paidBy =
-                document.getElementById(
-                    "paidBy"
-                ).value.trim();
+                document.getElementById("paidBy")
+                    .value.trim();
 
             const balanceAmount =
                 document.getElementById(
@@ -614,10 +490,8 @@ if (expenseForm) {
                     "expenseMessage"
                 );
 
-
             message.textContent =
                 "Adding expense...";
-
 
             if (
                 !date ||
@@ -631,9 +505,7 @@ if (expenseForm) {
                     "Please fill all fields.";
 
                 return;
-
             }
-
 
             const { data, error } =
                 await db
@@ -642,18 +514,13 @@ if (expenseForm) {
                         {
                             date: date,
                             purpose: purpose,
-                            amount:
-                                Number(amount),
-                            paid_by:
-                                paidBy,
+                            amount: Number(amount),
+                            paid_by: paidBy,
                             balance_amount:
-                                Number(
-                                    balanceAmount
-                                )
+                                Number(balanceAmount)
                         }
                     ])
                     .select();
-
 
             if (error) {
 
@@ -667,27 +534,21 @@ if (expenseForm) {
                     error.message;
 
                 return;
-
             }
-
 
             console.log(
                 "Expense added:",
                 data
             );
 
-
             message.textContent =
                 "Expense added successfully!";
-
 
             expenseForm.reset();
 
             await loadExpenses();
-
         }
     );
-
 }
 
 
@@ -702,16 +563,13 @@ async function deleteExpense(id) {
             "Are you sure you want to delete this expense?"
         );
 
-
     if (!confirmDelete) return;
-
 
     const { error } =
         await db
             .from("expenses")
             .delete()
             .eq("id", id);
-
 
     if (error) {
 
@@ -726,16 +584,13 @@ async function deleteExpense(id) {
         );
 
         return;
-
     }
-
 
     alert(
         "Expense deleted successfully!"
     );
 
     await loadExpenses();
-
 }
 
 
@@ -744,16 +599,6 @@ async function deleteExpense(id) {
 // =====================================
 
 async function editExpense(id) {
-
-    console.log(
-        "Editing expense ID:",
-        id
-    );
-
-
-    // =================================
-    // GET CURRENT EXPENSE
-    // =================================
 
     const {
         data,
@@ -764,7 +609,6 @@ async function editExpense(id) {
             .select("*")
             .eq("id", id)
             .single();
-
 
     if (fetchError) {
 
@@ -779,24 +623,15 @@ async function editExpense(id) {
         );
 
         return;
-
     }
-
 
     if (!data) {
 
-        alert(
-            "Expense not found."
-        );
+        alert("Expense not found.");
 
         return;
-
     }
 
-
-    // =================================
-    // GET NEW DATE
-    // =================================
 
     const newDate =
         prompt(
@@ -804,13 +639,8 @@ async function editExpense(id) {
             data.date
         );
 
-
     if (newDate === null) return;
 
-
-    // =================================
-    // GET NEW PURPOSE
-    // =================================
 
     const newPurpose =
         prompt(
@@ -818,13 +648,8 @@ async function editExpense(id) {
             data.purpose
         );
 
-
     if (newPurpose === null) return;
 
-
-    // =================================
-    // GET NEW AMOUNT
-    // =================================
 
     const newAmount =
         prompt(
@@ -832,13 +657,8 @@ async function editExpense(id) {
             data.amount
         );
 
-
     if (newAmount === null) return;
 
-
-    // =================================
-    // GET NEW PAID BY
-    // =================================
 
     const newPaidBy =
         prompt(
@@ -846,13 +666,8 @@ async function editExpense(id) {
             data.paid_by
         );
 
-
     if (newPaidBy === null) return;
 
-
-    // =================================
-    // GET NEW BALANCE
-    // =================================
 
     const newBalanceAmount =
         prompt(
@@ -860,13 +675,8 @@ async function editExpense(id) {
             data.balance_amount
         );
 
-
     if (newBalanceAmount === null) return;
 
-
-    // =================================
-    // VALIDATION
-    // =================================
 
     if (
         !newDate.trim() ||
@@ -881,7 +691,6 @@ async function editExpense(id) {
         );
 
         return;
-
     }
 
 
@@ -895,38 +704,23 @@ async function editExpense(id) {
         );
 
         return;
-
     }
 
 
-    // =================================
-    // UPDATE SUPABASE
-    // =================================
-
     const updatedExpense = {
 
-        date:
-            newDate.trim(),
+        date: newDate.trim(),
 
-        purpose:
-            newPurpose.trim(),
+        purpose: newPurpose.trim(),
 
-        amount:
-            Number(newAmount),
+        amount: Number(newAmount),
 
-        paid_by:
-            newPaidBy.trim(),
+        paid_by: newPaidBy.trim(),
 
         balance_amount:
             Number(newBalanceAmount)
 
     };
-
-
-    console.log(
-        "Updating expense:",
-        updatedExpense
-    );
 
 
     const {
@@ -938,7 +732,6 @@ async function editExpense(id) {
             .update(updatedExpense)
             .eq("id", id)
             .select();
-
 
     if (updateError) {
 
@@ -953,23 +746,18 @@ async function editExpense(id) {
         );
 
         return;
-
     }
-
 
     console.log(
         "Expense updated successfully:",
         updatedData
     );
 
-
     alert(
         "Expense updated successfully!"
     );
 
-
     await loadExpenses();
-
 }
 
 
@@ -992,18 +780,6 @@ if (logoutBtn) {
 
         }
     );
-
-}
-
-
-// =====================================
-// LOAD ADMIN DATA
-// =====================================
-
-if (adminExpenseTableBody) {
-
-    loadExpenses();
-
 }
 
 
@@ -1025,7 +801,6 @@ async function loadTeamExpenses() {
 
     if (!teamExpenseTableBody) return;
 
-
     const { data, error } =
         await db
             .from("expenses")
@@ -1033,7 +808,6 @@ async function loadTeamExpenses() {
             .order("date", {
                 ascending: true
             });
-
 
     if (error) {
 
@@ -1043,75 +817,41 @@ async function loadTeamExpenses() {
         );
 
         return;
-
     }
 
-
-    teamExpenseTableBody.innerHTML =
-        "";
-
-
-    // =================================
-    // GROUP BY DATE
-    // =================================
+    teamExpenseTableBody.innerHTML = "";
 
     const groupedExpenses = {};
 
+    data.forEach(function (expense) {
 
-    data.forEach(
-        function (expense) {
+        if (!groupedExpenses[expense.date]) {
 
-            if (
-                !groupedExpenses[
-                    expense.date
-                ]
-            ) {
-
-                groupedExpenses[
-                    expense.date
-                ] = [];
-
-            }
-
-            groupedExpenses[
-                expense.date
-            ].push(expense);
+            groupedExpenses[expense.date] = [];
 
         }
-    );
+
+        groupedExpenses[expense.date].push(expense);
+
+    });
 
 
-    // =================================
-    // DISPLAY TEAM EXPENSES
-    // =================================
-
-    Object.keys(
-        groupedExpenses
-    ).forEach(
+    Object.keys(groupedExpenses).forEach(
         function (date) {
 
             const expensesForDay =
                 groupedExpenses[date];
 
-
             const dailyTotal =
                 expensesForDay.reduce(
-                    function (
-                        sum,
-                        expense
-                    ) {
+                    function (sum, expense) {
 
                         return sum +
-                            (
-                                Number(
-                                    expense.amount
-                                ) || 0
-                            );
+                            (Number(expense.amount) || 0);
 
                     },
                     0
                 );
-
 
             const formattedDate =
                 new Date(
@@ -1127,10 +867,7 @@ async function loadTeamExpenses() {
 
 
             const dateRow =
-                document.createElement(
-                    "tr"
-                );
-
+                document.createElement("tr");
 
             dateRow.innerHTML = `
                 <td
@@ -1139,8 +876,7 @@ async function loadTeamExpenses() {
                 >
 
                     <div>
-                        Daily Expenses -
-                        ${formattedDate}
+                        Daily Expenses - ${formattedDate}
                     </div>
 
                     <strong>
@@ -1151,20 +887,14 @@ async function loadTeamExpenses() {
                 </td>
             `;
 
-
-            teamExpenseTableBody.appendChild(
-                dateRow
-            );
+            teamExpenseTableBody.appendChild(dateRow);
 
 
             expensesForDay.forEach(
                 function (expense) {
 
                     const row =
-                        document.createElement(
-                            "tr"
-                        );
-
+                        document.createElement("tr");
 
                     const tableDate =
                         new Date(
@@ -1179,7 +909,6 @@ async function loadTeamExpenses() {
                             }
                         );
 
-
                     row.innerHTML = `
 
                         <td>
@@ -1187,7 +916,7 @@ async function loadTeamExpenses() {
                         </td>
 
                         <td>
-                            ${expense.purpose}
+                            ${escapeHTML(expense.purpose)}
                         </td>
 
                         <td>
@@ -1197,7 +926,7 @@ async function loadTeamExpenses() {
                         </td>
 
                         <td>
-                            ${expense.paid_by}
+                            ${escapeHTML(expense.paid_by)}
                         </td>
 
                         <td>
@@ -1208,140 +937,18 @@ async function loadTeamExpenses() {
 
                     `;
 
-
-                    teamExpenseTableBody.appendChild(
-                        row
-                    );
+                    teamExpenseTableBody.appendChild(row);
 
                 }
             );
 
         }
     );
-
 }
 
 
 // =====================================
-// LOAD TEAM DATA
-// =====================================
-
-if (teamExpenseTableBody) {
-
-    loadTeamExpenses();
-
-}
-
-
-// =====================================
-// PDF LIBRARY
-// =====================================
-
-function loadPDFLibraries() {
-
-    return new Promise(
-        function (resolve, reject) {
-
-            // jsPDF already loaded
-            if (
-                window.jspdf &&
-                window.jspdf.jsPDF
-            ) {
-
-                loadAutoTable();
-
-                return;
-
-            }
-
-
-            const jsPDFScript =
-                document.createElement(
-                    "script"
-                );
-
-            jsPDFScript.src =
-                "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
-
-            jsPDFScript.onload =
-                function () {
-
-                    loadAutoTable();
-
-                };
-
-            jsPDFScript.onerror =
-                function () {
-
-                    reject(
-                        new Error(
-                            "Unable to load PDF library."
-                        )
-                    );
-
-                };
-
-            document.head.appendChild(
-                jsPDFScript
-            );
-
-
-            function loadAutoTable() {
-
-                if (
-                    window.jspdfAutoTableLoaded
-                ) {
-
-                    resolve();
-
-                    return;
-
-                }
-
-
-                const autoTableScript =
-                    document.createElement(
-                        "script"
-                    );
-
-                autoTableScript.src =
-                    "https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js";
-
-                autoTableScript.onload =
-                    function () {
-
-                        window.jspdfAutoTableLoaded =
-                            true;
-
-                        resolve();
-
-                    };
-
-                autoTableScript.onerror =
-                    function () {
-
-                        reject(
-                            new Error(
-                                "Unable to load PDF table library."
-                            )
-                        );
-
-                    };
-
-                document.head.appendChild(
-                    autoTableScript
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-// =====================================
-// DOWNLOAD EXPENSE PDF
+// PDF DOWNLOAD
 // =====================================
 
 async function downloadExpensesPDF() {
@@ -1353,7 +960,6 @@ async function downloadExpensesPDF() {
                 "downloadPdfBtn"
             );
 
-
         if (button) {
 
             button.disabled = true;
@@ -1364,12 +970,7 @@ async function downloadExpensesPDF() {
         }
 
 
-        // Load PDF libraries
-
-        await loadPDFLibraries();
-
-
-        // Get latest data from Supabase
+        // Get data directly from Supabase
 
         const {
             data,
@@ -1385,81 +986,53 @@ async function downloadExpensesPDF() {
 
         if (error) {
 
-            console.error(
-                "PDF data error:",
-                error
-            );
-
             alert(
-                "Unable to create PDF:\n\n" +
+                "Unable to get expenses:\n\n" +
                 error.message
             );
 
             return;
-
         }
 
 
-        if (
-            !data ||
-            data.length === 0
-        ) {
+        if (!data || data.length === 0) {
 
             alert(
                 "There are no expenses to download."
             );
 
             return;
-
         }
 
 
-        // =================================
         // TOTALS
-        // =================================
 
         let totalExpense = 0;
-
         let totalBalance = 0;
 
+        data.forEach(function (expense) {
 
-        data.forEach(
-            function (expense) {
+            totalExpense +=
+                Number(expense.amount) || 0;
 
-                totalExpense +=
-                    Number(
-                        expense.amount
-                    ) || 0;
+            totalBalance +=
+                Number(expense.balance_amount) || 0;
 
-                totalBalance +=
-                    Number(
-                        expense.balance_amount
-                    ) || 0;
-
-            }
-        );
+        });
 
 
-        // =================================
-        // CREATE PDF
-        // =================================
+        // jsPDF
 
-        const {
-            jsPDF
-        } = window.jspdf;
-
+        const jsPDF =
+            window.jspdf.jsPDF;
 
         const doc =
             new jsPDF();
 
 
-        // =================================
         // TITLE
-        // =================================
 
-        doc.setFontSize(
-            20
-        );
+        doc.setFontSize(20);
 
         doc.text(
             "Expense Tracker",
@@ -1467,10 +1040,7 @@ async function downloadExpensesPDF() {
             18
         );
 
-
-        doc.setFontSize(
-            11
-        );
+        doc.setFontSize(11);
 
         doc.text(
             "Expense Report",
@@ -1478,24 +1048,17 @@ async function downloadExpensesPDF() {
             26
         );
 
-
         doc.text(
             "Generated: " +
-            new Date().toLocaleDateString(
-                "en-IN"
-            ),
+            new Date().toLocaleDateString("en-IN"),
             14,
             33
         );
 
 
-        // =================================
         // SUMMARY
-        // =================================
 
-        doc.setFontSize(
-            12
-        );
+        doc.setFontSize(12);
 
         doc.text(
             "Total Expenses: Rs. " +
@@ -1519,113 +1082,79 @@ async function downloadExpensesPDF() {
         );
 
 
-        // =================================
-        // TABLE DATA
-        // =================================
+        // TABLE
 
         const tableData =
-            data.map(
-                function (expense) {
+            data.map(function (expense) {
 
-                    const formattedDate =
-                        new Date(
-                            expense.date +
-                            "T00:00:00"
-                        ).toLocaleDateString(
-                            "en-IN",
-                            {
-                                day: "2-digit",
-                                month: "short",
-                                year: "numeric"
-                            }
-                        );
+                const formattedDate =
+                    new Date(
+                        expense.date +
+                        "T00:00:00"
+                    ).toLocaleDateString(
+                        "en-IN",
+                        {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric"
+                        }
+                    );
 
+                return [
 
-                    return [
+                    formattedDate,
 
-                        formattedDate,
+                    expense.purpose || "",
 
-                        expense.purpose ||
-                            "",
+                    "Rs. " +
+                    Number(
+                        expense.amount
+                    ).toFixed(2),
 
-                        "Rs. " +
-                        Number(
-                            expense.amount
-                        ).toFixed(2),
+                    expense.paid_by || "",
 
-                        expense.paid_by ||
-                            "",
+                    "Rs. " +
+                    Number(
+                        expense.balance_amount
+                    ).toFixed(2)
 
-                        "Rs. " +
-                        Number(
-                            expense.balance_amount
-                        ).toFixed(2)
+                ];
 
-                    ];
+            });
 
-                }
-            );
-
-
-        // =================================
-        // PDF TABLE
-        // =================================
 
         doc.autoTable({
 
             startY: 66,
 
-            head: [
+            head: [[
+                "Date",
+                "Purpose",
+                "Amount",
+                "Paid By",
+                "Balance"
+            ]],
 
-                [
-                    "Date",
-                    "Purpose",
-                    "Amount",
-                    "Paid By",
-                    "Balance"
-                ]
+            body: tableData,
 
-            ],
-
-            body:
-                tableData,
-
-            theme:
-                "grid",
+            theme: "grid",
 
             styles: {
-
-                fontSize:
-                    9,
-
-                cellPadding:
-                    3
-
+                fontSize: 9,
+                cellPadding: 3
             },
 
             headStyles: {
-
-                fontSize:
-                    9
-
+                fontSize: 9
             }
 
         });
 
 
-        // =================================
-        // FOOTER TOTALS
-        // =================================
-
         const finalY =
-            doc.lastAutoTable.finalY +
-            12;
+            doc.lastAutoTable.finalY + 12;
 
-
-        doc.setFontSize(
-            12
-        );
-
+        doc.setFontSize(12);
 
         doc.text(
             "Total Expenses: Rs. " +
@@ -1633,7 +1162,6 @@ async function downloadExpensesPDF() {
             14,
             finalY
         );
-
 
         doc.text(
             "Total Balance: Rs. " +
@@ -1643,21 +1171,67 @@ async function downloadExpensesPDF() {
         );
 
 
-        // =================================
-        // SAVE PDF
-        // =================================
+        // =====================================
+        // MOBILE FRIENDLY DOWNLOAD
+        // =====================================
 
         const today =
             new Date()
                 .toISOString()
                 .split("T")[0];
 
-
-        doc.save(
+        const fileName =
             "Expense-Report-" +
             today +
-            ".pdf"
-        );
+            ".pdf";
+
+
+        // Create PDF blob
+
+        const pdfBlob =
+            doc.output("blob");
+
+        const pdfUrl =
+            URL.createObjectURL(pdfBlob);
+
+
+        // Mobile browsers handle opening the PDF
+        // more reliably than forced download.
+
+        const newWindow =
+            window.open(
+                pdfUrl,
+                "_blank"
+            );
+
+
+        // Desktop fallback
+
+        if (!newWindow) {
+
+            const link =
+                document.createElement("a");
+
+            link.href = pdfUrl;
+
+            link.download = fileName;
+
+            link.target = "_blank";
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            document.body.removeChild(link);
+
+        }
+
+
+        setTimeout(function () {
+
+            URL.revokeObjectURL(pdfUrl);
+
+        }, 60000);
 
 
     } catch (error) {
@@ -1679,7 +1253,6 @@ async function downloadExpensesPDF() {
                 "downloadPdfBtn"
             );
 
-
         if (button) {
 
             button.disabled = false;
@@ -1690,12 +1263,11 @@ async function downloadExpensesPDF() {
         }
 
     }
-
 }
 
 
 // =====================================
-// SETUP PDF BUTTON
+// PDF BUTTON
 // =====================================
 
 function setupPDFButton() {
@@ -1706,9 +1278,7 @@ function setupPDFButton() {
         );
 
 
-    // =================================
-    // ADMIN BUTTON
-    // =================================
+    // If button already exists
 
     if (button) {
 
@@ -1718,52 +1288,93 @@ function setupPDFButton() {
         );
 
         return;
-
     }
 
 
-    // =================================
-    // TEAM BUTTON
-    // =================================
+    // Team page doesn't have a button,
+    // so create one.
 
-    const dashboardHeader =
-        document.querySelector(
-            ".dashboard-header"
+    if (teamExpenseTableBody) {
+
+        const container =
+            document.querySelector(
+                ".dashboard-container"
+            );
+
+        if (!container) return;
+
+
+        button =
+            document.createElement("button");
+
+        button.id =
+            "downloadPdfBtn";
+
+        button.type =
+            "button";
+
+        button.textContent =
+            "📄 Download PDF";
+
+        button.style.marginBottom =
+            "20px";
+
+        button.style.padding =
+            "12px 18px";
+
+        button.style.border =
+            "none";
+
+        button.style.borderRadius =
+            "8px";
+
+        button.style.background =
+            "#4f46e5";
+
+        button.style.color =
+            "white";
+
+        button.style.fontSize =
+            "15px";
+
+        button.style.fontWeight =
+            "600";
+
+        button.style.cursor =
+            "pointer";
+
+
+        button.addEventListener(
+            "click",
+            downloadExpensesPDF
         );
 
 
-    if (!dashboardHeader) return;
-
-
-    button =
-        document.createElement(
-            "button"
+        container.insertBefore(
+            button,
+            container.querySelector(
+                ".table-container"
+            )
         );
 
-
-    button.id =
-        "downloadPdfBtn";
-
-
-    button.textContent =
-        "📄 Download PDF";
-
-
-    button.addEventListener(
-        "click",
-        downloadExpensesPDF
-    );
-
-
-    dashboardHeader.appendChild(
-        button
-    );
-
+    }
 }
 
 
 // =====================================
-// START PDF BUTTON
+// START
 // =====================================
+
+if (adminExpenseTableBody) {
+
+    loadExpenses();
+
+}
+
+if (teamExpenseTableBody) {
+
+    loadTeamExpenses();
+
+}
 
 setupPDFButton();
