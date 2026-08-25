@@ -74,8 +74,6 @@
         <div class="summary-cards">
 
 
-            <!-- TOTAL EXPENSES -->
-
             <div class="summary-card">
 
                 <div class="card-icon">
@@ -98,8 +96,6 @@
 
 
 
-            <!-- TOTAL BALANCE -->
-
             <div class="summary-card">
 
                 <div class="card-icon">
@@ -121,8 +117,6 @@
             </div>
 
 
-
-            <!-- TOTAL ENTRIES -->
 
             <div class="summary-card">
 
@@ -163,8 +157,6 @@
             <form id="expenseForm">
 
 
-                <!-- DATE -->
-
                 <label for="expenseDate">
                     Date
                 </label>
@@ -176,8 +168,6 @@
                 >
 
 
-
-                <!-- PURPOSE -->
 
                 <label for="purpose">
                     Purpose
@@ -191,8 +181,6 @@
                 >
 
 
-
-                <!-- AMOUNT -->
 
                 <label for="amount">
                     Amount
@@ -209,8 +197,6 @@
 
 
 
-                <!-- PAID BY -->
-
                 <label for="paidBy">
                     Paid By
                 </label>
@@ -223,8 +209,6 @@
                 >
 
 
-
-                <!-- BALANCE -->
 
                 <label for="balanceAmount">
                     Balance Amount
@@ -241,8 +225,6 @@
 
 
 
-                <!-- ADD BUTTON -->
-
                 <button
                     type="submit"
                 >
@@ -253,9 +235,7 @@
             </form>
 
 
-            <p
-                id="expenseMessage"
-            ></p>
+            <p id="expenseMessage"></p>
 
 
         </div>
@@ -317,9 +297,7 @@
                     </thead>
 
 
-                    <tbody
-                        id="adminExpenseTableBody"
-                    >
+                    <tbody id="adminExpenseTableBody">
 
                     </tbody>
 
@@ -345,6 +323,23 @@
         src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
     ></script>
 
+
+    <!-- ============================= -->
+    <!-- jsPDF -->
+    <!-- ============================= -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+    ></script>
+
+
+    <!-- ============================= -->
+    <!-- jsPDF AutoTable -->
+    <!-- ============================= -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"
+    ></script>
 
 
     <!-- ============================= -->
