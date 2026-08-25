@@ -532,7 +532,8 @@ DAILY EXPENSE HEADER
 
     color: #3730a3;
 
-    padding: 16px 18px !important;
+    /* Reduced from 16px */
+    padding: 11px 16px !important;
 
     border-top: 2px solid #c7d2fe;
 
@@ -542,21 +543,24 @@ DAILY EXPENSE HEADER
 }
 
 .daily-expense-date div {
-    font-size: 15px;
+    /* Reduced from 15px */
+    font-size: 13px;
 
     font-weight: 700;
 
-    margin-bottom: 6px;
+    /* Reduced spacing */
+    margin-bottom: 3px;
 }
 
 .daily-expense-date strong {
-    font-size: 19px;
+    /* Reduced from 19px */
+    font-size: 16px;
 
     color: #1e293b;
 
     display: inline-block;
 
-    margin-top: 2px;
+    margin-top: 0;
 }
 
 
@@ -704,16 +708,19 @@ MOBILE RESPONSIVE
     }
 
 
+    /* Smaller daily header on mobile */
+
     .daily-expense-date {
-        padding: 14px !important;
+        padding: 10px 12px !important;
     }
 
     .daily-expense-date div {
-        font-size: 14px;
+        font-size: 12px;
+        margin-bottom: 2px;
     }
 
     .daily-expense-date strong {
-        font-size: 17px;
+        font-size: 14px;
     }
 
 
@@ -764,6 +771,21 @@ SMALL MOBILE
 
     .expense-form-container {
         padding: 15px;
+    }
+
+
+    /* Extra small daily header */
+
+    .daily-expense-date {
+        padding: 9px 10px !important;
+    }
+
+    .daily-expense-date div {
+        font-size: 11px;
+    }
+
+    .daily-expense-date strong {
+        font-size: 13px;
     }
 
 }
