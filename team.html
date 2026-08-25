@@ -43,20 +43,70 @@
 
             </div>
 
+        </div>
 
-            <button
-                id="downloadPdfBtn"
-                type="button"
-            >
-                📄 Download PDF
-            </button>
+
+
+        <!-- ============================= -->
+        <!-- SUMMARY CARDS -->
+        <!-- ============================= -->
+
+        <div class="summary-cards">
+
+
+            <!-- TOTAL EXPENSES -->
+
+            <div class="summary-card">
+
+                <div class="card-icon">
+                    💰
+                </div>
+
+                <div>
+
+                    <p>
+                        Total Expenses
+                    </p>
+
+                    <h2 id="teamTotalExpense">
+                        ₹0.00
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TOTAL ENTRIES -->
+
+            <div class="summary-card">
+
+                <div class="card-icon">
+                    🧾
+                </div>
+
+                <div>
+
+                    <p>
+                        Total Entries
+                    </p>
+
+                    <h2 id="teamTotalEntries">
+                        0
+                    </h2>
+
+                </div>
+
+            </div>
+
 
         </div>
 
 
 
         <!-- ============================= -->
-        <!-- EXPENSES -->
+        <!-- DAILY EXPENSES -->
         <!-- ============================= -->
 
         <div class="expenses-section">
@@ -101,8 +151,6 @@
 
                     <tbody id="expenseTableBody">
 
-                        <!-- Expenses will appear here -->
-
                     </tbody>
 
                 </table>
@@ -120,7 +168,9 @@
     <!-- SUPABASE -->
     <!-- ============================= -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
 
 
     <!-- ============================= -->
