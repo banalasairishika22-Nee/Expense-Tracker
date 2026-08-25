@@ -793,10 +793,6 @@ const teamExpenseTableBody =
     );
 
 
-// =====================================
-// LOAD TEAM EXPENSES
-// =====================================
-
 async function loadTeamExpenses() {
 
     if (!teamExpenseTableBody) return;
@@ -821,6 +817,48 @@ async function loadTeamExpenses() {
 
     teamExpenseTableBody.innerHTML = "";
 
+    // =====================================
+    // TEAM SUMMARY TOTALS
+    // =====================================
+
+    let totalExpense = 0;
+
+    data.forEach(function (expense) {
+
+        totalExpense +=
+            Number(expense.amount) || 0;
+
+    });
+
+    const teamTotalExpense =
+        document.getElementById(
+            "teamTotalExpense"
+        );
+
+    const teamTotalEntries =
+        document.getElementById(
+            "teamTotalEntries"
+        );
+
+    if (teamTotalExpense) {
+
+        teamTotalExpense.textContent =
+            "₹" + totalExpense.toFixed(2);
+
+    }
+
+    if (teamTotalEntries) {
+
+        teamTotalEntries.textContent =
+            data.length;
+
+    }
+
+
+    // =====================================
+    // GROUP BY DATE
+    // =====================================
+
     const groupedExpenses = {};
 
     data.forEach(function (expense) {
@@ -835,6 +873,10 @@ async function loadTeamExpenses() {
 
     });
 
+
+    // =====================================
+    // DISPLAY TEAM EXPENSES
+    // =====================================
 
     Object.keys(groupedExpenses).forEach(
         function (date) {
@@ -866,6 +908,10 @@ async function loadTeamExpenses() {
                 );
 
 
+            // =================================
+            // DAILY HEADER
+            // =================================
+
             const dateRow =
                 document.createElement("tr");
 
@@ -887,8 +933,14 @@ async function loadTeamExpenses() {
                 </td>
             `;
 
-            teamExpenseTableBody.appendChild(dateRow);
+            teamExpenseTableBody.appendChild(
+                dateRow
+            );
 
+
+            // =================================
+            // EXPENSE ROWS
+            // =================================
 
             expensesForDay.forEach(
                 function (expense) {
@@ -916,7 +968,9 @@ async function loadTeamExpenses() {
                         </td>
 
                         <td>
-                            ${escapeHTML(expense.purpose)}
+                            ${escapeHTML(
+                                expense.purpose
+                            )}
                         </td>
 
                         <td>
@@ -926,7 +980,9 @@ async function loadTeamExpenses() {
                         </td>
 
                         <td>
-                            ${escapeHTML(expense.paid_by)}
+                            ${escapeHTML(
+                                expense.paid_by
+                            )}
                         </td>
 
                         <td>
@@ -937,15 +993,17 @@ async function loadTeamExpenses() {
 
                     `;
 
-                    teamExpenseTableBody.appendChild(row);
+                    teamExpenseTableBody.appendChild(
+                        row
+                    );
 
                 }
             );
 
         }
     );
-}
 
+}
 
 // =====================================
 // PDF DOWNLOAD
